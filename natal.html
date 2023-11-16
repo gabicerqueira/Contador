@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Natal - Contagem Regressiva</title>
+    <style>
+        body {
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .tudo {
+            color: white;
+            text-align: center;
+            background-color: #268763;
+            padding: 15px 25px;
+            border-radius: 10px;
+        }
+
+        .tempo {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .quadradinho {
+            font-size: 24px;
+            padding: 15px;
+            background-color: #145940;
+            color: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        #videoBG {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -100;
+            transform: translate(-50%, -50%);
+        }
+
+        h1 {
+            font-size: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="tudo">
+        <h1>Contagem Regressiva para o Natal</h1>
+        <div class="tempo">
+            <div class="quadradinho" id="dias"></div>
+            <div class="quadradinho" id="horas"></div>
+            <div class="quadradinho" id="minutos"></div>
+            <div class="quadradinho" id="segundos"></div>
+        </div>
+    </div>
+
+    <video autoplay muted loop id="videoBG">
+        <source src="video.mp4" type="video/mp4">
+    </video>
+
+    <script>
+        let contador = 0;
+        let posicao;
+
+        function formatNumero(numero) {
+            return numero < 10 ? `0${numero}` : numero;
+        }
+
+        function atualizarContador() {
+            contador++;
+
+            // Calcula a diferença em milissegundos entre a data do Natal e a data atual
+            const natalData = new Date(new Date().getFullYear(), 11, 25, 0, 0, 0, 0);
+            const diferenca = natalData - new Date();
+
+            // Calcula o número de dias completos contidos na diferença
+            const dias = Math.floor(diferenca / (1000 * 60 * 60 * 24));
+
+            // Calcula o restante de milissegundos após remover os dias e converte para horas
+            const horas = Math.floor((diferenca % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+
+            // Calcula o restante de milissegundos após remover os dias e horas, converte para minutos
+            const minutos = Math.floor((diferenca % (1000 * 60 * 60)) / (1000 * 60));
+
+            // Calcula o restante de milissegundos após remover os dias, horas e minutos, converte para segundos
+            const segundos = Math.floor((diferenca % (1000 * 60)) / 1000);
+
+            // Atualiza os elementos HTML
+            document.getElementById('dias').innerHTML = `<span>${formatNumero(dias)}</span> dias`;
+            document.getElementById('horas').innerHTML = `<span>${formatNumero(horas)}</span> horas`;
+            document.getElementById('minutos').innerHTML = `<span>${formatNumero(minutos)}</span> minutos`;
+            document.getElementById('segundos').innerHTML = `<span>${formatNumero(segundos)}</span> segundos`;
+
+            if (diferenca < 0) {
+                pausarContador();
+                document.getElementById('countdown').innerHTML = "Feliz Natal!";
+            }
+        }
+
+        function iniciarAutomaticamente() {
+            posicao = setInterval(atualizarContador, 1000);
+        }
+
+        // Inicia automaticamente ao carregar a página
+        iniciarAutomaticamente();
+    </script>
+</body>
+
+</html>
