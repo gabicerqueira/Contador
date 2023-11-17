@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <title>Natal - Contagem Regressiva com Barra de Progresso</title>
 
     <style>
@@ -67,6 +68,13 @@
             border-radius: 10px;
             transition: width 1s linear;
         }
+
+        #carregando {
+            margin-top: 10px;
+            font-size: 20px;
+            animation: flash infinite;
+            animation-duration: 2s;
+        }
     </style>
 </head>
 
@@ -81,7 +89,9 @@
         </div>
         <div id="barraProgresso">
             <div id="progresso"></div>
+
         </div>
+        <div id="carregando">Carregando...</div>
     </div>
 
     <script>
@@ -127,6 +137,10 @@
             if (diferencaAtual < 0) {
                 pausarContador();
                 document.getElementById('countdown').innerHTML = "Feliz Natal!";
+            }
+
+            if (progresso >= 100) {
+                document.getElementById('carregando').style.display = 'none';
             }
         }
 
